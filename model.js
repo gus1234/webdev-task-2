@@ -4,11 +4,10 @@ const { isUndefined } = require('util');
 const ObjectID = require('mongodb').ObjectID;
 
 module.exports.addPlace = async function (req, database, site) {
-    if (isUndefined(req.body.description) || isUndefined(req.body.name)) {
+    if (isUndefined(req.body.description)) {
         throw new Error('An error has occurred');
     } else {
         const place = {
-            name: req.body.name,
             description: req.body.description,
             visit: false,
             createDate: new Date(),
@@ -50,11 +49,11 @@ module.exports.deleteAll = async function (req, database) {
 };
 
 function sortPlaces(places, param) {
-    if (param === 'name') {
+    if (param === 'description') {
         places.sort((a, b) => {
-            if (a.name > b.name) {
+            if (a.description > b.description) {
                 return 1;
-            } else if (a.name < b.name) {
+            } else if (a.description < b.description) {
                 return -1;
             }
 
@@ -166,7 +165,6 @@ module.exports.updatePlace = async function (req, database) {
         var _description = isUndefined(req.body.description)
             ? doc.description : req.body.description;
         let place = {
-            name: doc.name,
             description: _description,
             visit: _visit,
             createDate: doc.createDate,
